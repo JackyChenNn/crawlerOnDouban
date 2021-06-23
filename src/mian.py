@@ -23,4 +23,4 @@ import requests
 # 需要把需求用Python转换成协议
 
 url = 'https://movie.douban.com/subject/1293182/comments'
-my_headers = {}
+my_headers = { }
