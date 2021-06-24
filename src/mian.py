@@ -15,7 +15,7 @@ import requests
 # 如何去模仿一个真正的浏览器？
 # 我们需要知道浏览器去访问网站的时候是怎么发送请求的
 # 通过HTTP/HTTPS协议
-# 比如使用HTTP协议 需要包含请求行 请求头 和请求报文
+# 比如使用HTTP协议，需要包含请求行、请求头和请求报文
 # 请求行样例： GET /xxx.html HTTP/1.1 (CRLF)
 # 包含：    请求方法  URI      协议版本  换行
 # 请求报文在GET方法中是没有的 在POST方法中就有
@@ -23,4 +23,13 @@ import requests
 # 需要把需求用Python转换成协议
 
 url = 'https://movie.douban.com/subject/1293182/comments'
-my_headers = { }
+
+# Python中典型的字典类型变量
+my_headers = {'user-agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36'}
+# 如果还是被识别不是浏览器，则需要添加更多的头部信息
+r = requests.get(url, headers = my_headers)
+
+print(r.status_code)
+
+# 整个网页的内容，有一些无用内容需要剔除，在Python中我们也可以找到相关的工具包来处理
+# print(r.text)
