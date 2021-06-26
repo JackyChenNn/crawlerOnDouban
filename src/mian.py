@@ -33,3 +33,8 @@ print(r.status_code)
 
 # 整个网页的内容，有一些无用内容需要剔除，在Python中我们也可以找到相关的工具包来处理
 # print(r.text)
+
+from lxml import etree
+selector = etree.HTML(r.text)
+
+selector.xpath('//div{}')
