@@ -60,12 +60,17 @@ print(len(userComment))
 
 # 让提取的数据一一对应
 # 引入中间值，利用python的序列进行拆分
-temp = selector.xpath('//div[@class="comment"]')
+# temp = selector.xpath('//div[@class="comment"]')
 # print(temp[0])
 # 查看用户评价是否包含星级
 # print(temp[3].xpath('./h3/span[2]/span[2]/@class'))
 
+# 这里为什么temp是div标签中class属性为comment的？
+# 是因为我们需要找到一个容器 其中包含了每条评论的所有信息——用户名、评分、评价内容等等
+temp = selector.xpath('//div[@class="comment"]')
+# 迭代每一个元素
 for everyElement in temp:
+    # 取得相对路径
     userName = everyElement.xpath('./h3/span[@class="comment-info"]/a/text()')
     userStar = everyElement.xpath('./h3/span[@class="comment-info"]/span[2]/@class')
     userComment = everyElement.xpath('./p/span[@class="short"]/text()')
@@ -75,3 +80,19 @@ for everyElement in temp:
         userStar = ["allstar0 rating"]
 
     print(f"{userName}::{userStar}::{userComment}")
+
+# 继续处理评论内容
+# 保存到文件做持久化储存
+with open("./12AngryMan_Short.txt", "w+", encoding='utf-8') as f:
+    for everyElement in temp:
+        # 取得相对路径
+        userName = everyElement.xpath('./h3/span[@class="comment-info"]/a/text()')
+        userStar = everyElement.xpath('./h3/span[@class="comment-info"]/span[2]/@class')
+        userComment = everyElement.xpath('./p/span[@class="short"]/text()')
+
+        # 如果用户评价不包含星级 则添加评分0
+        if not userStar:
+            userStar = ["allstar0 rating"]
+
+        AngryMan_Short = f"{userName}::{userStar}::{userComment}\n"
+        f.write(AngryMan_Short)
