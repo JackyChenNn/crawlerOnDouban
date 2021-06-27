@@ -34,7 +34,44 @@ print(r.status_code)
 # 整个网页的内容，有一些无用内容需要剔除，在Python中我们也可以找到相关的工具包来处理
 # print(r.text)
 
+# 取出具体内容
 from lxml import etree
 selector = etree.HTML(r.text)
 
-selector.xpath('//div{}')
+# 取出内容后，进行更加精确的匹配
+# 经过对网页源代码的查看，我们选出span标签中class属性为comment-info的，这就是每一页中的所有评论
+selector.xpath('//span[@class="comment-info"]')
+
+# 从中我们选出用户名 即comment-info中 a标签的属性
+username = selector.xpath('//span[@class="comment-info"]/a/text()')
+# 测试是否成功取出
+print(username)
+
+# 取出用户评价星级
+userStar = selector.xpath('//span[@class="comment-info"]/span[2]/@class')
+print(userStar)
+# 查看总共有多少个用户评价星级，如果数量同评论数量不等，则有不是逐一对应的情况，需要我们进一步处理
+print(len(userStar))
+
+# 取出文字评价
+userComment = selector.xpath('//span[@class="short"]/text()')
+print(userComment)
+print(len(userComment))
+
+# 让提取的数据一一对应
+# 引入中间值，利用python的序列进行拆分
+temp = selector.xpath('//div[@class="comment"]')
+# print(temp[0])
+# 查看用户评价是否包含星级
+# print(temp[3].xpath('./h3/span[2]/span[2]/@class'))
+
+for everyElement in temp:
+    userName = everyElement.xpath('./h3/span[@class="comment-info"]/a/text()')
+    userStar = everyElement.xpath('./h3/span[@class="comment-info"]/span[2]/@class')
+    userComment = everyElement.xpath('./p/span[@class="short"]/text()')
+
+    # 如果用户评价不包含星级 则添加评分0
+    if not userStar:
+        userStar = ["allstar0 rating"]
+
+    print(f"{userName}::{userStar}::{userComment}")
