@@ -24,6 +24,8 @@ import requests
 
 url = 'https://movie.douban.com/subject/1293182/comments'
 
+
+
 # Python中典型的字典类型变量
 my_headers = {'user-agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36'}
 # 如果还是被识别不是浏览器，则需要添加更多的头部信息
@@ -101,4 +103,8 @@ with open("./12AngryMan_Short.txt", "w+", encoding='utf-8') as f:
         f.write(AngryMan_Short)
 
 # 问题延伸：怎么翻页？
+# https://movie.douban.com/subject/1293182/comments?percent_type=&start=20&limit=20&status=P&sort=new_score&comments_only=1
+# https://movie.douban.com/subject/1293182/comments?percent_type=&start=40&limit=20&status=P&sort=new_score&comments_only=1
+
 # 怎么确定是最后一页？
+# //div[@id="paginator"]/span[1]
