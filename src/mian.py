@@ -127,7 +127,7 @@ def getFromDouban(url, times):
 
         getFromDouban(newUrl, newTimes)
     else:
-        # print('Crawling completed!')
+        print('Crawling completed!')
 
 
 url = 'https://movie.douban.com/subject/1293182/comments?limit=20&status=P&sort=new_score'
