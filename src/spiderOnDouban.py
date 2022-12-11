@@ -28,7 +28,7 @@ def spiderOnDouban(url, times, cookies=None):
     my_headers={"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"}
 
     # 如果还是被识别不是浏览器，则需要添加更多的头部信息
-    if cookies == NULL:
+    if cookies == None:
         r = requests.get(url, headers=my_headers)
     else:
         r = requests.get(url, headers=my_headers, cookies=cookies)
