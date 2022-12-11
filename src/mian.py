@@ -1,6 +1,7 @@
 # 需求： 对豆瓣“十二怒汉”电影的评论进行数据抓取分析
 
 from spiderOnDouban import spiderOnDouban
+from generateWordCloud import wordCloud
 
 if __name__ == '__main__':
     # 添加cookie信息，登陆用户后才能浏览11页以后的内容
@@ -16,3 +17,5 @@ if __name__ == '__main__':
         spiderOnDouban(url, times, cookies = cookies)
     else:
         spiderOnDouban(url, times)
+    # 生成词云图
+    wordCloud()

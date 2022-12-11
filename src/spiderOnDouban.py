@@ -3,32 +3,12 @@ from lxml import etree
 import random
 import time
 
-# # 先简单地模拟发送请求 我们会发现服务器并不会返回网站的数据给你
-# r = requests.get('https://movie.douban.com/subject/1293182/comments')
-#
-# # HTTP请求返回状态码418 I'm a teapot
-# print(r.status_code)
-#
-# # 我们会发现返回空值
-# print(r.text)
-
-
-# 如何去模仿一个真正的浏览器？
-# 我们需要知道浏览器去访问网站的时候是怎么发送请求的
-# 通过HTTP/HTTPS协议
-# 比如使用HTTP协议，需要包含请求行、请求头和请求报文
-# 请求行样例： GET /xxx.html HTTP/1.1 (CRLF)
-# 包含：    请求方法  URI      协议版本  换行
-# 请求报文在GET方法中是没有的 在POST方法中就有
-
-# 需要把需求用Python转换成协议
-
 def spiderOnDouban(url, times, cookies=None):
     # Python中典型的字典类型变量
     my_headers={"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"}
 
     # 如果还是被识别不是浏览器，则需要添加更多的头部信息
-    if cookies == NULL:
+    if cookies == None:
         r = requests.get(url, headers=my_headers)
     else:
         r = requests.get(url, headers=my_headers, cookies=cookies)
@@ -121,6 +101,7 @@ def spiderOnDouban(url, times, cookies=None):
         newUrl = 'https://movie.douban.com/subject/1293182/comments?start='+ str(newPage) +'&limit=20&status=P&sort=new_score'
         print('Page ' + str(newTimes) + ' crawling')
         print("Spider on: " + newUrl + '\n')
-        getFromDouban(newUrl, newTimes)
+        #递归爬取下一页内容
+        spiderOnDouban(newUrl, newTimes)
     else:
         print('Crawling completed!')
