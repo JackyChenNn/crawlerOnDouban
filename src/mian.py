@@ -5,7 +5,7 @@ from spiderOnDouban import spiderOnDouban
 if __name__ == '__main__':
     # 添加cookie信息，登陆用户后才能浏览11页以后的内容
     cookie_info = 'your cookie'
-    
+
     if cookie_info != 'your cookie':
         cookie_list = [info.strip().split('=') for info in cookie_info.split(';')]
         cookies = {data[0]:data[1].replace('"','') for data in cookie_list}
