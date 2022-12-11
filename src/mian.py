@@ -4,6 +4,11 @@ import requests
 
 from lxml import etree
 
+# 添加cookie信息，这里将'your cookie data'修改为你登陆后的cookie，通过cookie表示登陆状态后才能浏览11页及以后的内容
+cookie_info = 'your cookie data'
+cookie_list = [info.strip().split('=') for info in cookie_info.split(';')]
+cookies = {data[0]:data[1].replace('"','') for data in cookie_list}
+
 # # 先简单地模拟发送请求 我们会发现服务器并不会返回网站的数据给你
 # r = requests.get('https://movie.douban.com/subject/1293182/comments')
 #
@@ -36,7 +41,7 @@ def getFromDouban(url, times):
     my_headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36'}
     # 如果还是被识别不是浏览器，则需要添加更多的头部信息
-    r = requests.get(url, headers=my_headers)
+    r = requests.get(url, headers = my_headers, cookies = cookies)
 
     if r.status_code == 200 and times == 0:
         print("Successful connected with Douban.")
