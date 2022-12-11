@@ -121,6 +121,6 @@ def spiderOnDouban(url, times, cookies=None):
         newUrl = 'https://movie.douban.com/subject/1293182/comments?start='+ str(newPage) +'&limit=20&status=P&sort=new_score'
         print('Page ' + str(newTimes) + ' crawling')
         print("Spider on: " + newUrl + '\n')
-        getFromDouban(newUrl, newTimes)
+        spiderOnDouban(newUrl, newTimes)
     else:
         print('Crawling completed!')
