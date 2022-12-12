@@ -2,8 +2,10 @@ import requests
 from lxml import etree
 import random
 import time
+from bs4 import BeautifulSoup
+import re
 
-def spiderOnDouban(url, times, cookies=None):
+def crawlerOnComments(url, movie_id, times, cookies=None):
     # Python中典型的字典类型变量
     my_headers={"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"}
 
@@ -68,32 +70,24 @@ def spiderOnDouban(url, times, cookies=None):
 
     # 继续处理评论内容
     # 保存到文件做持久化储存
-    print(selector.xpath)
+    # print(selector.xpath)
     temp = selector.xpath('//div[@class="comment"]')
 
-    with open("./12AngryMan_Short.txt", "a+", encoding='utf-8') as f:
+    with open("./12AngryMan_Star.txt", "a+", encoding='utf-8') as f, open("./12AngryMan_Comments.txt", "a+", encoding='utf-8') as f2:
         for everyElement in temp:
             # 取得相对路径
-            userName = everyElement.xpath('./h3/span[@class="comment-info"]/a/text()')
+#             userName = everyElement.xpath('./h3/span[@class="comment-info"]/a/text()')
             userStar = everyElement.xpath('./h3/span[@class="comment-info"]/span[2]/@class')
             userComment = everyElement.xpath('./p/span[@class="short"]/text()')
 
-            # print(userName)
-            # print(userStar)
-            # print(userComment)
             # 如果用户评价不包含星级 则添加评分0
             if not userStar:
                 userStar = ["allstar0 rating"]
 
-            AngryMan_Short = f"{userName}::{userStar}::{userComment}\n"
-            f.write(AngryMan_Short)
-
-    '''
-    get images example
-    '''
-    imgs = img_operator(selector)
-    imgs.get_avatars()
-    imgs.get_movie_poster()
+            AngryMan_Comments = f"{userComment}\n"
+            AngryMan_Star = f"{userStar}\n"
+            f.write(AngryMan_Star)
+            f2.write(AngryMan_Comments)
 
     # 问题延伸：怎么翻页？
     # https://movie.douban.com/subject/1293182/comments?percent_type=&start=20&limit=20&status=P&sort=new_score&comments_only=1
@@ -105,11 +99,27 @@ def spiderOnDouban(url, times, cookies=None):
     if "后页 >" in selector.xpath('//div[@id="paginator"]/a/text()'):
         newTimes = times + 1
         newPage = newTimes * 20
-        newUrl = 'https://movie.douban.com/subject/1293182/comments?start='+ str(newPage) +'&limit=20&status=P&sort=new_score'
+        newUrl = 'https://movie.douban.com/subject/' + movie_id + '/comments?start='+ str(newPage) +'&limit=20&status=P&sort=new_score'
         print('Page ' + str(newTimes) + ' crawling')
         print("Spider on: " + newUrl + '\n')
-
         #递归爬取下一页内容
-        spiderOnDouban(newUrl, newTimes)
+        crawlerOnComments(newUrl, movie_id, newTimes)
     else:
         print('Crawling completed!')
+        
+        
+def getid(name):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.75 Safari/537.36',
+    }
+    movie_name = name
+    params = {
+        "q": movie_name
+    }
+    search_url = "https://www.douban.com/search"
+    r = requests.get(search_url, params=params, headers=headers)
+    soup = BeautifulSoup(r.content, 'lxml')
+    first_movie_info = soup.find('a', {'class': 'nbg'})['onclick']
+    pattern = re.compile('\d{4,}')
+    sid = str(pattern.search(first_movie_info).group())
+    return(sid)
