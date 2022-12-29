@@ -17,4 +17,4 @@ def getid(movie_name, search_url=None):
 
 '''Debug'''
 if __name__ == '__main__':
-    print(getid('十二怒汉'))
+    print(getid('战狼'))

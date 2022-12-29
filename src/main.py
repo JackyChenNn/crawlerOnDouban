@@ -1,4 +1,7 @@
-# 需求： 对豆瓣“十二怒汉”电影的评论进行数据抓取分析
+# Requirements: Search users enter movie names,
+# search for corresponding movies in Douban, 
+# then enter the comment page, and perform data 
+# crawling and analysis on Douban movie comments
 
 from tkinter import *
 import ttkbootstrap as ttk
@@ -24,8 +27,6 @@ def crawler():
         else:
             crawlerOnComments(url, movie_id, times)
             
-#         wordCloud()
-#         plt.show('./12Angryman.jpg')
     else:
         text.insert(END, '未输入电影名')
         text.update()
