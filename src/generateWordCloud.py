@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-
-
 import jieba
 from wordcloud import WordCloud, ImageColorGenerator
 import numpy as np
@@ -11,8 +9,8 @@ from collections import Counter
 import matplotlib.pyplot as plt
 
 def wordCloud():
-    
-    with open("./12AngryMan_Comments.txt","r",encoding="utf-8") as f:
+    comments_path = "./12AngryMan_Comments.txt"
+    with open(comments_path,"r",encoding="utf-8") as f:
         content = f.read()
 
     res_list = [i for i in jieba.cut(content) if len(i)>=2]
